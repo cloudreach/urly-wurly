@@ -64,8 +64,13 @@
         xhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
-            document.getElementById("shorterURL").innerHTML =
+            if (obj.shortened_url) {
+                document.getElementById("shorterURL").innerHTML =
               `${obj.message}  <a href="${obj.shortened_url}">${obj.shortened_url}</a>`;
+            } else {
+                document.getElementById("shorterURL").innerHTML =
+                `${obj.message}`;
+            }
           }
         };
         url = document.getElementById("inputURL").value;
