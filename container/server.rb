@@ -11,6 +11,11 @@ get '/' do
   File.read(File.join('public', 'index.html'))
 end
 
+post '/slack' do 
+  request.body.rewind
+  JSON.parse request.body.read
+end
+
 get '/s' do
   return {
       message: 'no url to shorten provided!',
