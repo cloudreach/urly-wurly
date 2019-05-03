@@ -21,7 +21,7 @@ end
 def gcs_read(key)
   storage = Google::Cloud::Storage.new project_id: ENV['PROJECT']
   bucket = storage.bucket 'urly-wurly-links'
-  bucket.file hash
+  return bucket.file key
 end
 
 get '/' do 
@@ -58,7 +58,8 @@ get '/l/:hash' do
       message: 'unable to find link!'
   } unless file
 
-  content = file.download.rewind
+  content = file.download 
+  content.rewind
   status 301
   response['Location'] = content.read
 end
