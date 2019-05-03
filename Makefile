@@ -1,6 +1,7 @@
 PROJECT := $(shell gcloud config get-value project)
-IMAGE := gcr.io/${PROJECT}/urly-wurly
-BUCKET := urly-wurly-links
+APP := urly-wurly
+IMAGE := gcr.io/${PROJECT}/${APP}
+BUCKET := ${APP}-links
 DOMAIN := urly-wurly-oyehxjlgwa-uc.a.run.app
 
 storage:
@@ -11,12 +12,12 @@ build:
 
 deploy:
 	gcloud config set run/region us-central1
-	gcloud beta run deploy urly-wurly \
+	gcloud beta run deploy ${APP} \
 		--allow-unauthenticated \
 	  --image ${IMAGE} \
 		--set-env-vars=DOMAIN=${DOMAIN},PROJECT=${PROJECT},BUCKET=${BUCKET}
 
 meta-data:
-	gcloud beta run services describe urly-wurly
+	gcloud beta run services describe ${APP}
 
 all: storage build deploy
