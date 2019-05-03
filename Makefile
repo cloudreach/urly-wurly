@@ -1,7 +1,7 @@
 PROJECT := $(shell gcloud config get-value project)
 IMAGE := gcr.io/${PROJECT}/urly-wurly
 BUCKET := urly-wurly-links
-DOMAIN := urly-wurly-p53dlhmcna-uc.a.run.app
+DOMAIN := urly-wurly-oyehxjlgwa-uc.a.run.app
 
 storage:
 	gsutil mb gs://${BUCKET}
