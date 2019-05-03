@@ -13,6 +13,7 @@ end
 
 post '/slack' do 
   command = params['command']
+  puts "command"
   full_url = command.sub('/wurly', '').strip 
   full_uri = URI.parse(url)
 
@@ -25,7 +26,6 @@ post '/slack' do
   storage = Google::Cloud::Storage.new project_id: ENV['PROJECT']
   bucket = storage.bucket 'urly-wurly-links'
   bucket.create_file StringIO.new(full_url), hash
-
 
   response['Content-Type'] = 'application/json'
 
