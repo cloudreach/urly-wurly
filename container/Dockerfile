@@ -4,6 +4,7 @@ WORKDIR "/app"
 
 ADD "public/" "."
 ADD "public/index.html" "public/"
+ADD "public/logo-trans.png" "public/"
 ADD "server.rb" "."
 ADD "Gemfile" "."
 
