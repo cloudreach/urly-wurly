@@ -26,6 +26,9 @@ post '/slack' do
   bucket = storage.bucket 'urly-wurly-links'
   bucket.create_file StringIO.new(full_url), hash
 
+
+  response['Content-Type'] = 'application/json'
+
   return {
     text: "Shortened URL: https://#{domain}/l/#{hash}",
   }.to_json
