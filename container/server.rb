@@ -12,9 +12,7 @@ get '/' do
 end
 
 post '/slack' do 
-  command = params['command']
-  puts command
-  full_url = command.sub('/wurly', '').strip 
+  full_url = params['text'].strip
   full_uri = URI.parse(url)
 
   return {
