@@ -8,20 +8,6 @@
 
     <title>Urly Wurly</title>
     <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
       html,
       body {
         height: 100%;
@@ -64,15 +50,14 @@
 
     </style>
   </head>
-  <body class="text-center">
-    <form class="form-signin">
-      <h1 class="h3 mb-3 font-weight-normal">Welcome to Urly Wurly</h1>
-      <label class="sr-only">Long and awful URL</label>
-      <input id="inputURL" class="form-control" placeholder="Long and awful URL">
-      <div id="shorterURL" class="checkbox mb-3">
-      </div>
-      <button onclick="wurl_da_url()" class="btn btn-lg btn-primary btn-block" type="submit">Wurl my URL!</button>
-    </form>
+  <body>
+    <div class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Welcome to Urly Wurly</h1>
+        <label class="sr-only">Long and awful URL</label>
+        <input id="inputURL" class="form-control" placeholder="Long and awful URL">
+        <div id="shorterURL" class="checkbox mb-3" style="text-align: center;" ></div>
+        <button onclick="wurl_da_url()" class="btn btn-lg btn-primary btn-block">Wurl my URL!</button>
+    </div>
     <script>
       function wurl_da_url() {
         var xhttp = new XMLHttpRequest();
@@ -80,11 +65,11 @@
           if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
             document.getElementById("shorterURL").innerHTML =
-              `Shortened URL: ${obj.shortened_url}`;
+              `${obj.message}  <a href="${obj.shortened_url}">${obj.shortened_url}</a>`;
           }
         };
         url = document.getElementById("inputURL").value;
-        xhttp.open("GET", `/s?url='${url}'`, true);
+        xhttp.open("GET", `s?url='${url}'`, true);
         xhttp.send();
       }
     </script>

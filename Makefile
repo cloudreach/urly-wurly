@@ -18,3 +18,5 @@ deploy:
 
 meta-data:
 	gcloud beta run services describe urly-wurly
+
+all: storage build deploy
