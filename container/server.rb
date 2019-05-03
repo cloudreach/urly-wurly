@@ -12,8 +12,23 @@ get '/' do
 end
 
 post '/slack' do 
-  request.body.rewind
-  JSON.parse request.body.read
+  command = params['command']
+  full_url = command.sub('/wurly', '').strip 
+  full_uri = URI.parse(url)
+
+  return {
+    text: 'Error: provided input is not a HTTP/HTTPS URL!'
+  }.to_json unless ['https', 'http'].include? full_uri.scheme
+
+  domain = ENV['DOMAIN']
+  hash = Adler32.checksum full_url
+  storage = Google::Cloud::Storage.new project_id: ENV['PROJECT']
+  bucket = storage.bucket 'urly-wurly-links'
+  bucket.create_file StringIO.new(full_url), hash
+
+  return {
+    text: "Shortened URL: https://#{domain}/l/#{hash}",
+  }.to_json
 end
 
 get '/s' do
