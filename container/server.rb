@@ -49,7 +49,7 @@ get '/s' do
 
   # Compute short code and persist
   shortcode = short_code full_url
-  gcs_write(hash, full_url)
+  gcs_write(shortcode, full_url)
 
   # Construct new URL and respond
   domain = ENV['DOMAIN']
@@ -64,7 +64,7 @@ get '/l/:shortcode' do
   # Endpoint to reverse shortening
   file = gcs_read(params['shortcode'])
 
-  # Unable to find persisted long URL for given hash
+  # Unable to find persisted long URL for given code
   return { message: 'unable to find URL!' } unless file
 
   # Read object and reset scanner index
