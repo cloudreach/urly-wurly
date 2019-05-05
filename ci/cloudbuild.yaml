@@ -1,0 +1,18 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/$_APP', 'container/']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/$_APP']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+    - 'beta'
+    - 'run'
+    - 'deploy'
+    - '$_APP'
+    - '--allow-unauthenticated'
+    - '--region'
+    - 'us-central1'
+    - '--image'
+    - 'gcr.io/$PROJECT_ID/$_APP'
+    - '--set-env-vars=DOMAIN=$_DOMAIN,PROJECT=$PROJECT_ID,BUCKET=$_BUCKET'
+
