@@ -14,6 +14,9 @@ cicd:
 	gcloud projects add-iam-policy-binding ${PROJECT} \
 		--member serviceAccount:396559029476@cloudbuild.gserviceaccount.com \
 		--role roles/editor
+	gcloud beta run services add-iam-policy-binding \
+		--region=us-central1 --member=allUsers \
+		--role=roles/run.invoker ${APP}
 	gcloud builds submit \
 		--config ci/cloudbuild.yaml \
 		--substitutions=_APP="${APP}",_DOMAIN="${DOMAIN}",_BUCKET="${BUCKET}"
