@@ -41,10 +41,15 @@ get '/s' do
   # Trim ' and " chars from URL parameter
   full_url = params['url'].gsub(/\A"|"\Z/, '').gsub(/\A'|'\Z/, '')
 
-  puts "Input URL: '#{full_url}'"
-
   # Try parsing out required URL schemes
-  full_uri = URI.parse full_url
+  full_uri = nil
+  begin
+    full_uri = URI.parse full_url
+  rescue
+    return {
+      message: 'unable to parse URI. was it encoded?'
+    }.to_json
+  end
   return {
     message: 'provided input is not a HTTP/HTTPS URL!'
   }.to_json unless %w[https http].include? full_uri.scheme
@@ -86,12 +91,17 @@ post '/slack' do
 
   full_url = params['text'].strip
 
-  puts "Input URL: '#{full_url}'"
-
   # Try parsing out required URL schemes
-  full_uri = URI.parse(url)
+  full_uri = nil
+  begin
+    full_uri = URI.parse full_url
+  rescue
+    return {
+      message: 'unable to parse URI. was it encoded?'
+    }.to_json
+  end
   return {
-    text: 'provided input is not a HTTP/HTTPS URL!'
+    message: 'provided input is not a HTTP/HTTPS URL!'
   }.to_json unless %w[https http].include? full_uri.scheme
 
   # Compute short code and persist

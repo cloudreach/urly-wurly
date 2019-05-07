@@ -74,7 +74,7 @@
             }
           }
         };
-        url = document.getElementById("inputURL").value;
+        url = encodeURIComponent(document.getElementById("inputURL").value);
         xhttp.open("GET", `s?url='${url}'`, true);
         xhttp.send();
       }
