@@ -1,5 +1,4 @@
 source "https://rubygems.org"
 
 gem "google-cloud-storage"
-gem "google-cloud-monitoring"
 gem "sinatra"
