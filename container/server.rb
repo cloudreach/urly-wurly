@@ -41,6 +41,8 @@ get '/s' do
   # Trim ' and " chars from URL parameter
   full_url = params['url'].gsub(/\A"|"\Z/, '').gsub(/\A'|'\Z/, '')
 
+  puts "Input URL: '#{full_url}'"
+
   # Try parsing out required URL schemes
   full_uri = URI.parse full_url
   return {
@@ -83,6 +85,8 @@ post '/slack' do
   }.to_json unless params['text']
 
   full_url = params['text'].strip
+
+  puts "Input URL: '#{full_url}'"
 
   # Try parsing out required URL schemes
   full_uri = URI.parse(url)
