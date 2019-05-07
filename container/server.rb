@@ -61,6 +61,7 @@ get '/s' do
   # Construct new URL and respond
   domain = ENV['DOMAIN']
   response['Content-Type'] = 'application/json'
+  response['Access-Control-Allow-Origin'] = '*'
   {
     shortened_url: "https://#{domain}/l/#{shortcode}",
     message: 'url shortened!'
