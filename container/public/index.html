@@ -70,7 +70,7 @@
               `${obj.message}  <a href="${obj.shortened_url}">${obj.shortened_url}</a>`;
                 var button = document.createElement("button");
                 button.innerHTML = "Copy";
-                var body = document.getElementsById("shorterURL");
+                var body = document.getElementById("shorterURL");
                 body.appendChild(button);
                 button.addEventListener ("click", function() {
                   var copyText = obj.shortened_url;
