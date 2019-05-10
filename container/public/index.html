@@ -68,16 +68,12 @@
             if (obj.shortened_url) {
                 document.getElementById("shorterURL").innerHTML =
               `${obj.message}  <a href="${obj.shortened_url}">${obj.shortened_url}</a>`;
-                var button = document.createElement("button");
-                button.innerHTML = "Copy";
-                var body = document.getElementById("shorterURL");
-                body.appendChild(button);
-                button.addEventListener ("click", function() {
-                  var copyText = obj.shortened_url;
-                  copyText.select();
-                  document.execCommand("copy");
-                  alert("Copied the text: " + copyText.value);
-                });
+              const el = document.createElement('textarea');
+              el.value = obj.shortened_url;
+              document.body.appendChild(el);
+              el.select();
+              document.execCommand('copy');
+              document.body.removeChild(el);
             } else {
                 document.getElementById("shorterURL").innerHTML =
                 `${obj.message}`;
