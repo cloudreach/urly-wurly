@@ -67,7 +67,7 @@
             var obj = JSON.parse(this.responseText);
             if (obj.shortened_url) {
                 document.getElementById("shorterURL").innerHTML =
-              `${obj.message}<br>  <a href="${obj.shortened_url}">${obj.shortened_url}</a><br> "copied to clipboard"`;
+              `${obj.message}<br>  <a href="${obj.shortened_url}">${obj.shortened_url}</a><br> copied to clipboard`;
               const el = document.createElement('textarea');
               el.value = obj.shortened_url;
               document.body.appendChild(el);
