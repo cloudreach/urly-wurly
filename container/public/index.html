@@ -47,8 +47,12 @@
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
       }
-
     </style>
+    </style>
+    <script type="text/javascript" src="qrcode.js">
+    </script>
+    <script type="text/javascript" src="html5-qrcode.js">
+    </script>
   </head>
   <body class="text-center">
     <div class="form-signin">
@@ -57,6 +61,7 @@
       <label class="sr-only">Long and awful URL</label>
       <input id="inputURL" class="form-control" placeholder="Long and awful URL">
       <div id="shorterURL" class="checkbox mb-3" style="text-align: center;" ></div>
+      <div id="qrcode" style="position:relative;left:-50px;"></div>
       <button onclick="wurl_da_url()" class="btn btn-lg btn-primary btn-block">Wurl my URL!</button>
     </div>
     <script>
@@ -74,11 +79,18 @@
               el.select();
               document.execCommand('copy');
               document.body.removeChild(el);
+              var element = document.getElementById("qrcode");
+                if(element.lastChild)
+                  element.replaceChild(showQRCode(obj.shortened_url), element.lastChild);
+                else
+                  element.appendChild(showQRCode(obj.shortened_url));
+              linebreak = document.createElement("br");
+              element.appendChild(linebreak);
             } else {
                 document.getElementById("shorterURL").innerHTML =
                 `${obj.message}`;
             }
-          }
+          } 
         };
         url = encodeURIComponent(document.getElementById("inputURL").value);
         xhttp.open("GET", `s?url='${url}'`, true);
