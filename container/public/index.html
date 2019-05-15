@@ -72,17 +72,20 @@
             if (obj.shortened_url) {
                 document.getElementById("shorterURL").innerHTML =
               `${obj.message}<br>  <a href="${obj.shortened_url}">${obj.shortened_url}</a><br> copied to clipboard!`;
+              
               const el = document.createElement('textarea');
               el.value = obj.shortened_url;
               document.body.appendChild(el);
               el.select();
               document.execCommand('copy');
               document.body.removeChild(el);
+
               var element = document.getElementById("qrcode");
-                if(element.lastChild)
-                  element.replaceChild(showQRCode(obj.shortened_url), element.lastChild);
-                else
-                  element.appendChild(showQRCode(obj.shortened_url));
+              if(element.lastChild) {
+                element.replaceChild(showQRCode(obj.shortened_url), element.lastChild);
+              } else {
+                element.appendChild(showQRCode(obj.shortened_url));
+              }
             } else {
                 document.getElementById("shorterURL").innerHTML =
                 `${obj.message}`;
