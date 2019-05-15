@@ -83,7 +83,7 @@
                 if(element.lastChild)
                   element.replaceChild(showQRCode("https://google.com"), element.lastChild);
                 else
-                  element.appendChild(showQRCode(obj.shortened_url));
+                  element.appendChild(showQRCode("https://google.com"));
             } else {
                 document.getElementById("shorterURL").innerHTML =
                 `${obj.message}`;
