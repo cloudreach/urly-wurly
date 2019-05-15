@@ -81,11 +81,9 @@
               document.body.removeChild(el);
               var element = document.getElementById("qrcode");
                 if(element.lastChild)
-                  element.replaceChild(showQRCode(obj.shortened_url), element.lastChild);
+                  element.replaceChild(showQRCode("https://google.com"), element.lastChild);
                 else
                   element.appendChild(showQRCode(obj.shortened_url));
-              linebreak = document.createElement("br");
-              element.appendChild(linebreak);
             } else {
                 document.getElementById("shorterURL").innerHTML =
                 `${obj.message}`;
