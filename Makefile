@@ -1,4 +1,5 @@
 PROJECT := $(shell gcloud config get-value project)
+OWNER := $(shell gcloud config get-value account | sed -e 's/@/_at_/' | sed -e 's/\./_dot_/g')
 APP := urly-wurly
 IMAGE := gcr.io/${PROJECT}/${APP}
 BUCKET := ${APP}-links
@@ -6,6 +7,11 @@ DOMAIN := urly-wurly-oyehxjlgwa-uc.a.run.app
 
 storage:
 	gsutil mb gs://${BUCKET}
+
+labels:
+	gsutil label ch -l project:${APP} gs://${BUCKET}
+	gsutil label ch -l owner:${OWNER} gs://${BUCKET}
+	gsutil label ch -l approver:not-set gs://${BUCKET}
 
 build:
 	gcloud builds submit container/ --tag ${IMAGE}
