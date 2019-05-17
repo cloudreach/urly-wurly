@@ -3,7 +3,7 @@ OWNER := $(shell gcloud config get-value account | sed -e 's/@/_at_/' | sed -e '
 APP := urly-wurly
 IMAGE := gcr.io/${PROJECT}/${APP}
 BUCKET := ${APP}-links
-DOMAIN := urly-wurly-oyehxjlgwa-uc.a.run.app
+DOMAIN := u.crlabs.cloud
 
 storage:
 	gsutil mb gs://${BUCKET}
