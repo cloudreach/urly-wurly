@@ -3,7 +3,7 @@ OWNER := $(shell gcloud config get-value account | sed -e 's/@/_at_/' | sed -e '
 APP := urly-wurly
 IMAGE := gcr.io/${PROJECT}/${APP}
 BUCKET := ${APP}-links
-DOMAIN := u.crlabs.cloud
+DOMAIN := w.crlabs.cloud
 
 storage:
 	gsutil mb gs://${BUCKET}
@@ -18,7 +18,7 @@ build:
 
 cicd:
 	gcloud projects add-iam-policy-binding ${PROJECT} \
-		--member serviceAccount:396559029476@cloudbuild.gserviceaccount.com \
+		--member serviceAccount:1017367627722@cloudbuild.gserviceaccount.com \
 		--role roles/editor
 	gcloud builds submit \
 		--config ci/cloudbuild.yaml \
