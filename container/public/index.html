@@ -94,6 +94,12 @@
       </div>
   </nav>
 
+  <div class="jumbotron" id="login-urly-wurly" style="display: none">
+      <h3 style="font-weight:bold;">Wurl your Url:</h3>
+      <pre class="text-error" style="word-wrap: break-word;white-space: pre-wrap;" id="secret-area-print">Login to Urly Wurly</pre>
+      <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+  </div>
+  <div id="logout-urly-wurly" style="display: none"><a href="#" onclick="signOut();">Sign out</a></div>
 
   <div class="form-signin">
     <img class="mb-4" src="/logo-trans.png" alt="" width="90" height="120">
@@ -102,12 +108,6 @@
     <input id="inputURL" class="form-control" placeholder="Long and awful URL">
     <div id="shorterURL" class="checkbox mb-3" style="text-align: center;" ></div>
     <button onclick="wurl_da_url()" class="btn btn-lg btn-primary btn-block">Wurl my URL!</button>
-    <div class="jumbotron" id="login-urly-wurly" style="display: none">
-        <h3 style="font-weight:bold;">Wurl your Url:</h3>
-        <pre class="text-error" style="word-wrap: break-word;white-space: pre-wrap;" id="secret-area-print">Login to Urly Wurly</pre>
-        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-    </div>
-    <div id="logout-secret" style="display: none"><a href="#" onclick="signOut();">Sign out</a></div>
   </div>
   <script>
     function wurl_da_url() {
