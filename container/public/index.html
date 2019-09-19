@@ -34,7 +34,7 @@
     <!-- App -->            
     <link href="https://secrets.cloudreach.com/static/style.css" rel="stylesheet">
     
-    <!--
+
     <style>
       html,
       body {
@@ -76,7 +76,6 @@
         border-bottom-left-radius: 0;
       }
     </style>
-  -->
 </head>
 
 <body>
@@ -102,9 +101,9 @@
       <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
   </div>
   <div id="logout-urly-wurly" style="display: none"><a href="#" onclick="signOut();">Sign out</a></div>
-</div>
-  <!--
-  <div class="form-signin">
+
+
+  <div class="form-signin" id="urly-wurly" style="display: none">
     <img class="mb-4" src="/logo-trans.png" alt="" width="90" height="120">
     <h1 class="h3 mb-3 font-weight-normal">Welcome to Urly Wurly</h1>
     <label class="sr-only">Long and awful URL</label>
@@ -139,6 +138,11 @@
       xhttp.send();
     }
   </script>
--->
+</div>
+<footer>
+    <!-- General scripts -->
+<script src="/app.js" charset="utf-8"></script>
+
+</footer>
 </body>
 </html>
