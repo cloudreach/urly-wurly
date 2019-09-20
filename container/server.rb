@@ -63,14 +63,14 @@ get '/s' do
   response['Content-Type'] = 'application/json'
   response['Access-Control-Allow-Origin'] = '*'
   {
-    shortened_url: "https://#{domain}/l/#{shortcode}",
+    shortened_url: "https://#{domain}/#{shortcode}",
     message: 'url shortened!'
   }.to_json
 end
 
-get '/l/:shortcode' do
+get %r{/[\w]{6}+} do
   # Endpoint to reverse shortening
-  file = gcs_read(params['shortcode'])
+  file = gcs_read(params[:captures].first)
 
   # Unable to find persisted long URL for given code
   return { message: 'unable to find URL!' } unless file
