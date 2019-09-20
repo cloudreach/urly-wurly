@@ -4,7 +4,8 @@
     }(function ($, window, document) {
 
         // define html elements
-
+            
+            $WEB_URL = window.location.hostname,
             $login_urly_wurly = $('#login-urly-wurly'),
             $logout_urly_wurly = $('#logout-urly-wurly'),
             $message_block = $('#message-block'),
@@ -47,8 +48,26 @@
         function get_sts_credentials(id_token) {
             // ok we are logged in
             $login_urly_wurly.hide();
-            $urly_wurly.show();
             $logout_urly_wurly.show();
+            // get STS credentials
+            request.post({
+                url: `https://${$WEB_URL}/api/get_creds`,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                json: true,
+                body: {id_token: id_token}
+            }, function (error, response, body) {
+                // console.log('Received STS response', body);
+                if (body.error || (body.status && body.status.toLowerCase() == 'error')) {
+                    console.log('not authorized');
+                    $urly_wurly.hide();
+                    show_message('error', 'Not Authorized');
+                } else {
+                    $message_block.hide();
+                    $urly_wurly.show();
+                }
+            });
         }
 
     }));
