@@ -11,7 +11,6 @@
     <title>Cloudreach Urly Wurly</title>
     <link rel="icon" href="https://www.cloudreach.com/app/img/icons/Cloudreach_favicon_32x32.png">
     <script src="https://apis.google.com/js/platform.js"></script>
-    <script src="https://secrets.cloudreach.com/static/bundle.js"></script>
 
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" charset="utf-8"></script>
@@ -87,21 +86,16 @@
   <div class="jumbotron" id="message-block" style="display: none">
       <pre class="text-error" style="word-wrap: break-word;white-space: pre-wrap;" id="message"></pre>
   </div>
-  <div class="jumbotron" id="login-urly-wurly" style="display: none">
-      <h3 style="font-weight:bold;">Wurl your Url</h3>
-      <pre class="text-error" style="word-wrap: break-word;white-space: pre-wrap;" id="urly-wurly-print">Login to Urly Wurly</pre>
-      <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-  </div>
-  <div id="logout-urly-wurly" style="display: none"><a href="#" onclick="signOut();">Sign out</a></div>
-
 
   <div class="form-signin" id="urly-wurly" style="display: none">
+    <centre>
     <img class="mb-4" src="/logo-trans.png" alt="" width="90" height="120">
-    <h1 class="h3 mb-3 font-weight-normal">Welcome to Urly Wurly</h1>
+    <h1 class="h3 mb-3 font-weight-normal" style="text-align: center;">Welcome to Urly Wurly</h1>
     <label class="sr-only">Long and awful URL</label>
     <input id="inputURL" class="form-control" placeholder="Long and awful URL">
     <div id="shorterURL" class="checkbox mb-3" style="text-align: center;" ></div>
     <button onclick="wurl_da_url()" class="btn btn-lg btn-primary btn-block">Wurl my URL!</button>
+    </centre>
   </div>
   <script>
     function wurl_da_url() {
@@ -130,11 +124,17 @@
       xhttp.send();
     }
   </script>
+
+  <div class="jumbotron" id="login-urly-wurly" style="display: none">
+      <h3 style="font-weight:bold;">Wurl your Url</h3>
+      <pre class="text-error" style="word-wrap: break-word;white-space: pre-wrap;" id="urly-wurly-print">Login to Urly Wurly</pre>
+      <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+  </div>
+  <div id="logout-urly-wurly" style="display: none"><a href="#" onclick="signOut();">Sign out</a></div>
 </div>
 <footer>
     <!-- General scripts -->
-<script src="/app.js" charset="utf-8"></script>
-
+  <script src="/app.js" charset="utf-8"></script>
 </footer>
 </body>
 </html>
