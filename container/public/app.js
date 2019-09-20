@@ -4,7 +4,6 @@
     }(function ($, window, document) {
 
         // define html elements
-            $WEB_URL = window.location.hostname,
 
             $login_urly_wurly = $('#login-urly-wurly'),
             $logout_urly_wurly = $('#logout-urly-wurly'),
@@ -14,10 +13,9 @@
         ;
 
         $login_urly_wurly.show();
-        // register global functionfor single sign
+        // register global function for single sign
         window.onSignIn = function (googleUser) {
             $logout_urly_wurly.show();
-            // Useful data for your client-side scripts:
             var id_token = googleUser.getAuthResponse().id_token;
             show_message('info', 'Authorizing Google client');
             get_sts_credentials(id_token);
