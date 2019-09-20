@@ -11,7 +11,6 @@
     <title>Cloudreach Urly Wurly</title>
     <link rel="icon" href="https://www.cloudreach.com/app/img/icons/Cloudreach_favicon_32x32.png">
     <script src="https://apis.google.com/js/platform.js"></script>
-    <script src="https://secrets.cloudreach.com/static/bundle.js"></script>
 
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" charset="utf-8"></script>
@@ -21,7 +20,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
             
     <!-- App -->            
-    <link href="https://secrets.cloudreach.com/static/style.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
     
 
     <style>
@@ -71,7 +70,7 @@
   <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
           <div class="navbar-img">
-              <img class="img-responsive" src="https://secrets.cloudreach.com/static/logo.png" alt="Cloudreach"/>
+              <img class="img-responsive" src="/c-logo.png" alt="Cloudreach"/>
           </div>
           <div class="navbar-header">
               <a href="/"><span class="navbar-brand">Urly Wurly</span></a>
@@ -84,9 +83,12 @@
   </nav>
 
 <div class="container">
+  <div class="jumbotron" id="message-block" style="display: none">
+      <pre class="text-error" style="word-wrap: break-word;white-space: pre-wrap;" id="message"></pre>
+  </div>
   <div class="jumbotron" id="login-urly-wurly" style="display: none">
       <h3 style="font-weight:bold;">Wurl your Url:</h3>
-      <pre class="text-error" style="word-wrap: break-word;white-space: pre-wrap;" id="secret-area-print">Login to Urly Wurly</pre>
+      <pre class="text-error" style="word-wrap: break-word;white-space: pre-wrap;" id="urly-wurly-print">Login to Urly Wurly</pre>
       <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
   </div>
   <div id="logout-urly-wurly" style="display: none"><a href="#" onclick="signOut();">Sign out</a></div>

@@ -7,7 +7,8 @@
 
             $login_urly_wurly = $('#login-urly-wurly'),
             $logout_urly_wurly = $('#logout-urly-wurly'),
-
+            $message_block = $('#message-block'),
+            $message = $('#message'),
             $urly_wurly = $('#urly-wurly')
 
         ;
