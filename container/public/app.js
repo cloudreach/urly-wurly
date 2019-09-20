@@ -28,6 +28,21 @@
             });
         };
 
+        var show_message = function(level, text) {
+            let className;
+            switch(level.toLowerCase()) {
+                case 'error':
+                case 'info':
+                    className = `text-${level.toLowerCase()}`;
+                    break;
+                default:
+                    className = 'text-info';
+            }
+            $message.attr('class', className);
+            $message.text(text);
+            $message_block.show();
+        }
+
         function get_sts_credentials(id_token) {
             // ok we are logged in
             $login_urly_wurly.hide();
