@@ -68,6 +68,42 @@ get '/s' do
   }.to_json
 end
 
+get '/r' do
+  # Endpoint to shorten a longer URL
+  return {
+    message: 'no url to shorten provided!'
+  }.to_json unless params['url']
+
+  # Trim ' and " chars from URL parameter
+  full_url = params['url'].gsub(/\A"|"\Z/, '').gsub(/\A'|'\Z/, '')
+
+  # Try parsing out required URL schemes
+  full_uri = nil
+  begin
+    full_uri = URI.parse full_url
+  rescue
+    return {
+      message: 'unable to parse URI. was it encoded?'
+    }.to_json
+  end
+  return {
+    message: 'provided input is not a HTTP/HTTPS URL!'
+  }.to_json unless %w[https http].include? full_uri.scheme
+
+  # Get custom url name and persist
+  customname = params['custom']
+  gcs_write(customname, full_url)
+
+  # Construct new URL and respond
+  domain = ENV['DOMAIN']
+  response['Content-Type'] = 'application/json'
+  response['Access-Control-Allow-Origin'] = '*'
+  {
+    shortened_url: "https://#{domain}/#{customname}",
+    message: 'url renamed!'
+  }.to_json
+end
+
 get %r{/([\w]+)} do
   # Endpoint to reverse shortening
   file = gcs_read(params[:captures].first)

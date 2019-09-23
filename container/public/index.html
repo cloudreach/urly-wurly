@@ -94,6 +94,7 @@
     <h1 class="h3 mb-3 font-weight-normal" style="text-align: center;">Welcome to Urly Wurly</h1>
     <label class="sr-only">Long and awful URL</label>
     <input id="inputURL" class="form-control" placeholder="Long and awful URL">
+    <input id="customURL" class="form-control" placeholder="Custom name">
     <div id="shorterURL" class="checkbox mb-3" style="text-align: center;" ></div>
     <button onclick="wurl_da_url()" class="btn btn-lg btn-primary btn-block">Wurl my URL!</button>
   </div>
@@ -120,8 +121,16 @@
         } 
       };
       url = encodeURIComponent(document.getElementById("inputURL").value);
-      xhttp.open("GET", `s?url='${url}'`, true);
-      xhttp.send();
+      customname = encodeURIComponent(document.getElementById("customURL").value);
+      if (url && customname) {
+        xhttp.open("GET", `r?url='${url}'&customname='${customname}'`, true);
+        xhttp.send();
+      } else if (url && customname === "") {
+        xhttp.open("GET", `s?url='${url}'`, true);
+        xhttp.send();
+      } else {
+        document.getElementById("shorterURL").innerHTML = "Please provide valid input";
+      }
     }
   </script>
 
