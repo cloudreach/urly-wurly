@@ -93,18 +93,20 @@ get '/r' do
   # Get custom url name and persist
   customname = params['customname']
   file = gcs_read(params['customname'])
+  domain = ENV['DOMAIN']
+  response['Content-Type'] = 'application/json'
   unless file
-    gcs_write(customname, full_url)
-      # Construct new URL and respond
-      domain = ENV['DOMAIN']
-      response['Content-Type'] = 'application/json'
+      gcs_write(customname, full_url)
       response['Access-Control-Allow-Origin'] = '*'
       {
         shortened_url: "https://#{domain}/#{customname}",
         message: 'url renamed!'
       }.to_json
     else
-      erb :error_message
+      response['Access-Control-Allow-Origin'] = '*'
+      {
+        message: 'Custom name already taken. Expand your creativity!'
+      }.to_json
   end
 end
 
@@ -156,7 +158,3 @@ post '/slack' do
     text: "Shortened URL: https://#{domain}/#{shortcode}"
   }.to_json
 end
-
-__END__
-@@ error_message
-<h1>Custom name already taken, expand your creativity!</h>
