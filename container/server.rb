@@ -70,7 +70,7 @@ end
 
 get %r{/[\w]{6}+} do
   # Endpoint to reverse shortening
-  file = gcs_read(params[:captures].first)
+  file = gcs_read(params[:captures])
 
   # Unable to find persisted long URL for given code
   return { message: 'unable to find URL!' } unless file
