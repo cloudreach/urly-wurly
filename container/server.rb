@@ -113,6 +113,6 @@ post '/slack' do
   domain = ENV['DOMAIN']
   response['Content-Type'] = 'application/json'
   {
-    text: "Shortened URL: https://#{domain}/l/#{shortcode}"
+    text: "Shortened URL: https://#{domain}/#{shortcode}"
   }.to_json
 end
