@@ -104,7 +104,7 @@ get '/r' do
         message: 'url renamed!'
       }.to_json
     else
-      return { message: 'Already taken. Be more creative!' }  
+      "Already taken. Be more creative!"
   end
 end
 
