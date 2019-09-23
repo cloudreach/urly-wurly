@@ -91,7 +91,7 @@ get '/r' do
   }.to_json unless %w[https http].include? full_uri.scheme
 
   # Get custom url name and persist
-  customname = params['custom']
+  customname = params['customname']
   gcs_write(customname, full_url)
 
   # Construct new URL and respond
