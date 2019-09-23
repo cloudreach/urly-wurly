@@ -1,16 +1,16 @@
-require 'base64'
-require 'digest/sha1'
+require 'base58'
 require 'google/cloud/storage'
 require 'json'
 require 'sinatra'
 require 'uri'
+require 'zlib'
 
 set :bind, '0.0.0.0'
 set :port, ENV['PORT']
 
 def short_code(url)
   # Create short code key as substitute URL
-  Base64.encode64(Digest::SHA1.hexdigest(url))[22..27]
+  Base58.int_to_base58(Zlib.crc32(url))
 end
 
 def gcs_write(key, content)
@@ -63,14 +63,14 @@ get '/s' do
   response['Content-Type'] = 'application/json'
   response['Access-Control-Allow-Origin'] = '*'
   {
-    shortened_url: "https://#{domain}/l/#{shortcode}",
+    shortened_url: "https://#{domain}/#{shortcode}",
     message: 'url shortened!'
   }.to_json
 end
 
-get '/l/:shortcode' do
+get %r{/([\w]+)} do
   # Endpoint to reverse shortening
-  file = gcs_read(params['shortcode'])
+  file = gcs_read(params[:captures].first)
 
   # Unable to find persisted long URL for given code
   return { message: 'unable to find URL!' } unless file
