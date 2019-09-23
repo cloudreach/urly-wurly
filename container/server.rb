@@ -159,4 +159,4 @@ end
 
 __END__
 @@ error_message
-<h1>Custom name already taken, be more creative!</h>
+<h1>Custom name already taken, expand your creativity!</h>
