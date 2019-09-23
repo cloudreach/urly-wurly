@@ -1,13 +1,22 @@
 # Feature Backlog
 
-1) authentication, or at least restriction to create only to within CR
+## TODO
 
-2) custom urls
+* custom urls
 
-3) users dashboard (but this will take a while)
+* users dashboard (but this will take a while) with link metrics
 
-4) new domain
+* new domain
 
-5) rebranding
+* send authenticated user context to backend and associate with GCS object metadata
 
-6) bijective encoding a la 2shrt4.me
+## DONE
+
+* authentication, or at least restriction to create only to within CR
+
+* greedy match to '/:short_code' instead of '/l/:short_code'
+
+* rebranding
+
+* bijective encoding a la 2shrt4.me
+
