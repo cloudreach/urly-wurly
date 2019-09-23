@@ -2,9 +2,11 @@ require 'base58'
 require 'google/cloud/storage'
 require 'json'
 require 'sinatra'
+require 'sinatra/flash'
 require 'uri'
 require 'zlib'
 
+enable :session
 set :bind, '0.0.0.0'
 set :port, ENV['PORT']
 
@@ -104,7 +106,7 @@ get '/r' do
         message: 'url renamed!'
       }.to_json
     else
-      return { message: 'Already taken. Be more creative!' }  
+      flash[:error] = "Custom name already taken. Be more creative!"
   end
 end
 

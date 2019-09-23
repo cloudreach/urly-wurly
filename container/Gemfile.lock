@@ -65,6 +65,7 @@ GEM
       tilt (~> 2.0)
     tilt (2.0.9)
     uber (0.1.0)
+    sinatra-flash (0.3.0)
 
 PLATFORMS
   ruby
@@ -73,6 +74,7 @@ DEPENDENCIES
   base58
   google-cloud-storage
   sinatra
+  sinatra/flash
 
 BUNDLED WITH
    1.17.2
