@@ -93,17 +93,16 @@ get '/r' do
   # Get custom url name and persist
   customname = params['customname']
   file = gcs_read(params['customname'])
-  domain = ENV['DOMAIN']
-  response['Content-Type'] = 'application/json'
   unless file
       gcs_write(customname, full_url)
+      domain = ENV['DOMAIN']
+      response['Content-Type'] = 'application/json'
       response['Access-Control-Allow-Origin'] = '*'
       {
         shortened_url: "https://#{domain}/#{customname}",
         message: 'url renamed!'
       }.to_json
     else
-      response['Access-Control-Allow-Origin'] = '*'
       {
         message: 'Custom name already taken. Expand your creativity!'
       }.to_json
