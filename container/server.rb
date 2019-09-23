@@ -104,7 +104,7 @@ get '/r' do
         message: 'url renamed!'
       }.to_json
     else
-      "Already taken. Be more creative!"
+      erb :error_message
   end
 end
 
@@ -156,3 +156,7 @@ post '/slack' do
     text: "Shortened URL: https://#{domain}/#{shortcode}"
   }.to_json
 end
+
+__END__
+@@ error_message
+<h1>Custom name already taken, be more creative!</h>
