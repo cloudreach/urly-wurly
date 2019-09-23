@@ -68,7 +68,7 @@ get '/s' do
   }.to_json
 end
 
-get %r{/[\w]{6}+} do
+get %r{/([\w]{6}+)} do
   # Endpoint to reverse shortening
   file = gcs_read(params[:captures].first)
 
