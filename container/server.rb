@@ -1,16 +1,16 @@
-require 'base64'
-require 'digest/sha1'
+require 'base58'
 require 'google/cloud/storage'
 require 'json'
 require 'sinatra'
 require 'uri'
+require 'zlib'
 
 set :bind, '0.0.0.0'
 set :port, ENV['PORT']
 
 def short_code(url)
   # Create short code key as substitute URL
-  Base64.encode64(Digest::SHA1.hexdigest(url))[22..27]
+  Base58.int_to_base58(Zlib.crc32(url))
 end
 
 def gcs_write(key, content)
