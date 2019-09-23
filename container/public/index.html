@@ -123,7 +123,7 @@
       url = encodeURIComponent(document.getElementById("inputURL").value);
       customname = encodeURIComponent(document.getElementById("customURL").value);
       if (url && customname) {
-        xhttp.open("GET", `r?url='${url}'&customname='${customname}'`, true);
+        xhttp.open("GET", `r?url='${url}'&customname=${customname}`, true);
         xhttp.send();
       } else if (url && customname === "") {
         xhttp.open("GET", `s?url='${url}'`, true);
