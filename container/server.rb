@@ -109,7 +109,7 @@ get '/r' do
   end
 end
 
-get %r{/([.]+)} do
+get %r{/(.+)} do
   # Endpoint to reverse shortening
   file = gcs_read(params[:captures].first)
 
