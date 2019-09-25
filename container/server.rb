@@ -109,9 +109,9 @@ get '/r' do
   end
 end
 
-get %r{/([\w-]+)} do
+get '/:shortcode' do
   # Endpoint to reverse shortening
-  file = gcs_read(params[:captures].first)
+  file = gcs_read(params['shortcode'])
 
   # Unable to find persisted long URL for given code
   return { message: 'unable to find URL!' } unless file
