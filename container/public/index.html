@@ -102,7 +102,7 @@
     function wurl_da_url() {
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState == 4) {
           var obj = JSON.parse(this.responseText);
           if (obj.shortened_url) {
               document.getElementById("shorterURL").innerHTML =

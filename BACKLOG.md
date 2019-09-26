@@ -2,8 +2,6 @@
 
 ## TODO
 
-* custom urls
-
 * users dashboard (but this will take a while) with link metrics
 
 * new domain
@@ -20,3 +18,4 @@
 
 * bijective encoding a la 2shrt4.me
 
+* custom name
