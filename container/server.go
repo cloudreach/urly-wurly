@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"regexp"
 
 	"cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
@@ -61,6 +62,15 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 	parameters, ok = r.URL.Query()["customname"]
 	if ok {
 		custom = parameters[0]
+		reg, err := regexp.Compile(`[\w-]{6,}`)
+		if err != nil {
+			respond(response{"", "unable to compile regex"}, http.StatusInternalServerError, w)
+		}
+
+		if !reg.MatchString(custom) {
+			respond(response{"", "custom name should be at least 6 alphanumeric characters incl. underscores and dashes!"}, http.StatusBadRequest, w)
+			return
+		}
 	}
 
 	shortURL, err := shortenURL(longURL, custom)
