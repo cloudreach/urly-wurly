@@ -123,10 +123,10 @@
       url = encodeURIComponent(document.getElementById("inputURL").value);
       customname = encodeURIComponent(document.getElementById("customURL").value);
       if (url && customname) {
-        xhttp.open("GET", `s?url='${url}'&customname=${customname}`, true);
+        xhttp.open("GET", `s?url=${url}&customname=${customname}`, true);
         xhttp.send();
       } else if (url && customname === "") {
-        xhttp.open("GET", `s?url='${url}'`, true);
+        xhttp.open("GET", `s?url=${url}`, true);
         xhttp.send();
       } else {
         document.getElementById("shorterURL").innerHTML = "Please provide valid input";
