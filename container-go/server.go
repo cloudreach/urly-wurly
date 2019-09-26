@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/binary"
 	"encoding/json"
@@ -33,7 +34,7 @@ func main() {
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 	router.Use(mux.CORSMethodMiddleware(router))
 	http.Handle("/", router)
-	log.Fatal(http.ListenAndServe(":80", nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), nil))
 }
 
 func shortenHandler(w http.ResponseWriter, r *http.Request) {
@@ -77,6 +78,7 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 	shortURL := fmt.Sprintf("https://%s/%s", os.Getenv("DOMAIN"), shortCode)
 
 	w.Write(respondSuccess(shortURL, "url shortened!"))
+	return
 }
 
 func lengthenHandler(w http.ResponseWriter, r *http.Request) {
@@ -85,7 +87,18 @@ func lengthenHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("implement lengthenHandler"))
+	code := mux.Vars(r)["id"]
+
+	longURL, err := gcsRead(code)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(respondError("unable to find URL!"))
+		return
+	}
+
+	w.Header().Set("Location", longURL)
+	w.WriteHeader(http.StatusMovedPermanently)
+	return
 }
 
 func slackHandler(w http.ResponseWriter, r *http.Request) {
@@ -94,6 +107,7 @@ func slackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Write([]byte("implement slackHandler"))
+	return
 }
 
 func generateShortCode(url string) string {
@@ -122,24 +136,61 @@ func respondSuccess(url string, message string) []byte {
 
 func gcsWrite(short string, url string) error {
 	ctx := context.Background()
+
 	client, err := storage.NewClient(ctx)
 	if err != nil {
 		return err
 	}
+
 	bucket := client.Bucket(os.Getenv("BUCKET"))
 	object := bucket.Object(short)
 	writer := object.NewWriter(ctx)
+
 	_, err = fmt.Fprintf(writer, url)
 	if err != nil {
 		return err
 	}
+
 	err = writer.Close()
 	if err != nil {
 		return err
 	}
+
 	err = client.Close()
 	if err != nil {
 		return err
 	}
+
 	return nil
+}
+
+func gcsRead(short string) (string, error) {
+	ctx := context.Background()
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		return "", err
+	}
+
+	bucket := client.Bucket(os.Getenv("BUCKET"))
+	object := bucket.Object(short)
+
+	reader, err := object.NewReader(ctx)
+	if err != nil {
+		return "", err
+	}
+
+	buffer := new(bytes.Buffer)
+	buffer.ReadFrom(reader)
+
+	err = writer.Close()
+	if err != nil {
+		return "", err
+	}
+
+	err = client.Close()
+	if err != nil {
+		return "", err
+	}
+
+	return buffer.String(), nil
 }
