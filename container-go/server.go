@@ -17,19 +17,14 @@ import (
 	"github.com/mr-tron/base58"
 )
 
-type errorResponse struct {
-	Message string `json:"message"`
-}
-
-type successResponse struct {
-	ShortenedURL string `json:"shortened_url"`
+type response struct {
+	ShortenedURL string `json:"shortened_url,omitempty"`
 	Message      string `json:"message"`
 }
 
 func main() {
 	router := mux.NewRouter()
-	router.HandleFunc("/s", shortenHandler).Methods(http.MethodGet, http.MethodOptions)
-	router.HandleFunc("/slack", slackHandler).Methods(http.MethodPost, http.MethodOptions)
+	router.HandleFunc("/s", shortenHandler).Methods(http.MethodGet, http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/{id:[\\w-]+}", lengthenHandler).Methods(http.MethodGet, http.MethodOptions)
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 	router.Use(mux.CORSMethodMiddleware(router))
@@ -45,20 +40,20 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	parameters, ok := r.URL.Query()["url"]
 	if !ok || len(parameters[0]) < 1 {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(respondError("no url to shorten provided!"))
-		return
+		parameters, ok = r.URL.Query()["text"]
+		if !ok || len(parameters[0]) < 1 {
+			respond(response{"", "no url to shorten provided!"}, http.StatusBadRequest, w)
+			return
+		}
 	}
 	longURL := parameters[0]
 	uri, err := url.Parse(longURL)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(respondError("unable to parse URI. was it encoded?"))
+		respond(response{"", "unable to parse URI. was it encoded?"}, http.StatusBadRequest, w)
 		return
 	}
 	if uri.Scheme != "https" && uri.Scheme != "http" {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(respondError("provided input is not a HTTP/HTTPS URL!"))
+		respond(response{"", "provided input is not a HTTP/HTTPS URL!"}, http.StatusBadRequest, w)
 		return
 	}
 
@@ -70,51 +65,10 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 
 	shortURL, err := shortenURL(longURL, custom)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(respondError("unable to access GCS!"))
+		respond(response{"", "unable to access GCS!"}, http.StatusInternalServerError, w)
 		return
 	}
-	w.Write(respondSuccess(shortURL, "url shortened!"))
-}
-
-func slackHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	if r.Method == http.MethodOptions {
-		return
-	}
-
-	parameters, ok := r.URL.Query()["text"]
-	if !ok || len(parameters[0]) < 1 {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(respondError("no url to shorten provided!"))
-		return
-	}
-	longURL := parameters[0]
-	uri, err := url.Parse(longURL)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(respondError("unable to parse URI. was it encoded?"))
-		return
-	}
-	if uri.Scheme != "https" && uri.Scheme != "http" {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(respondError("provided input is not a HTTP/HTTPS URL!"))
-		return
-	}
-
-	custom := ""
-	parameters, ok = r.URL.Query()["customname"]
-	if ok {
-		custom = parameters[0]
-	}
-
-	shortURL, err := shortenURL(longURL, custom)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(respondError("unable to access GCS!"))
-		return
-	}
-	w.Write(respondSuccess(shortURL, "url shortened!"))
+	respond(response{shortURL, "url shortened!"}, http.StatusOK, w)
 }
 
 func lengthenHandler(w http.ResponseWriter, r *http.Request) {
@@ -125,8 +79,7 @@ func lengthenHandler(w http.ResponseWriter, r *http.Request) {
 	short := mux.Vars(r)["id"]
 	longURL, err := lengthenURL(short)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(respondError("unable to find URL!"))
+		respond(response{"", "unable to find URL!"}, http.StatusBadRequest, w)
 		return
 	}
 	w.Header().Set("Location", longURL)
@@ -219,18 +172,11 @@ func generateShortCode(url string) string {
 	return code
 }
 
-func respondError(message string) []byte {
-	marshalled, err := json.Marshal(errorResponse{message})
+func respond(resp response, code int, writer http.ResponseWriter) {
+	marshalled, err := json.Marshal(resp)
 	if err != nil {
 		log.Println(err)
 	}
-	return marshalled
-}
-
-func respondSuccess(url string, message string) []byte {
-	marshalled, err := json.Marshal(successResponse{url, message})
-	if err != nil {
-		log.Println(err)
-	}
-	return marshalled
+	writer.WriteHeader(code)
+	writer.Write(marshalled)
 }
