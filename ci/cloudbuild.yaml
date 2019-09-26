@@ -12,5 +12,5 @@ steps:
     - '--platform=managed'
     - '--region=us-central1'
     - '--image=gcr.io/$PROJECT_ID/$_APP'
-    - '--set-env-vars=DOMAIN=$_DOMAIN,PROJECT=$PROJECT_ID,BUCKET=$_BUCKET'
+    - '--set-env-vars=DOMAIN=$_DOMAIN,BUCKET=$_BUCKET'
     - '$_APP'

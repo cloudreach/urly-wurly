@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"strings"
 
 	"cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
@@ -47,7 +48,7 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	longURL := parameters[0]
+	longURL := strings.TrimSpace(parameters[0])
 	uri, err := url.Parse(longURL)
 	if err != nil {
 		respond(response{"", "unable to parse URI. was it encoded?"}, http.StatusBadRequest, w)

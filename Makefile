@@ -29,7 +29,7 @@ deploy:
 		--allow-unauthenticated \
 	  --image ${IMAGE} \
 		--region us-central1 \
-		--set-env-vars=DOMAIN=${DOMAIN},PROJECT=${PROJECT},BUCKET=${BUCKET}
+		--set-env-vars=DOMAIN=${DOMAIN},BUCKET=${BUCKET}
 
 meta-data:
 	gcloud beta run services describe ${APP}
