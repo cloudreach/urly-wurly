@@ -1,17 +1,16 @@
-FROM ruby:2.6.3-alpine
+# build stage
+FROM golang AS build-env
+RUN go get -u cloud.google.com/go/storage
+RUN go get -u github.com/gorilla/mux
+RUN go get -u github.com/mr-tron/base58
+WORKDIR /src/
+ADD server.go /src/
+RUN cd /src && CGO_ENABLED=0 GOOS=linux GOARCH=amd64  go build -tags netgo -a -installsuffix cgo -o server
 
-WORKDIR "/app"
-
-ADD "public/" "."
-ADD "public/index.html" "public/"
-ADD "public/logo-trans.png" "public/"
-ADD "public/app.js" "public/"
-ADD "public/bg.png" "public/"
-ADD "public/c-logo.png" "public/"
-ADD "public/style.css" "public/"
-ADD "server.rb" "."
-ADD "Gemfile" "."
-
-RUN ["bundle", "install"]
-
-ENTRYPOINT ["ruby", "./server.rb"]
+# final stage
+FROM alpine
+EXPOSE 80
+WORKDIR /app/
+COPY --from=build-env /src/server /app/
+ADD ./public /app/public/
+ENTRYPOINT /app/server
