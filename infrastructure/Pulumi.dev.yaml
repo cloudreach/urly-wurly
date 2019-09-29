@@ -1,0 +1,8 @@
+config:
+  gcp:project: cr-lab-dstamer-2609192157
+  urly-wurly:location: us-central1
+  urly-wurly:branch: develop
+  urly-wurly:repository: https://bitbucket.org/cloudreach/urly-wurly
+  urly-wurly:domain: urly-wurly-dev-d39f677-mq4pa5dbpq-uc.a.run.app
+  urly-wurly:project_name: cr-lab-dstamer-2609192157
+  urly-wurly:project_number: 456033566869
