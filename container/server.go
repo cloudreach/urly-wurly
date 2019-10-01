@@ -1,3 +1,4 @@
+// Package main builds a basic HTTP server to provide URL shortening functions on GCP.
 package main
 
 import (
@@ -19,8 +20,11 @@ import (
 	"github.com/mr-tron/base58"
 )
 
+// struct response forms a JSON response for the servers API.
 type response struct {
+	// Shortened URL (if successful)
 	ShortenedURL string `json:"shortened_url,omitempty"`
+	// Informative message about what has happened
 	Message      string `json:"message"`
 }
 
