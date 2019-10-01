@@ -28,6 +28,7 @@ type response struct {
 	Message      string `json:"message"`
 }
 
+// Launch HTTP server, register routes & handlers and server static files
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/s", shortenHandler).Methods(http.MethodGet, http.MethodPost, http.MethodOptions)
@@ -38,6 +39,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), nil))
 }
 
+// GET & POST handler to shorten URLs
 func shortenHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
@@ -86,6 +88,8 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 	respond(response{shortURL, "url shortened!"}, http.StatusOK, w)
 }
 
+// GET handler to lengthen a previously shortened URLS.
+// Upon success, HTTP 302 will be returned to redirect to long URL
 func lengthenHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	if r.Method == http.MethodOptions {
@@ -101,6 +105,7 @@ func lengthenHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusMovedPermanently)
 }
 
+// Create a short URL and store the long one in GCS
 func shortenURL(long string, code string) (string, error) {
 	if code == "" {
 		code = generateShortCode(long)
@@ -114,10 +119,12 @@ func shortenURL(long string, code string) (string, error) {
 	return fmt.Sprintf("https://%s/%s", os.Getenv("DOMAIN"), code), nil
 }
 
+// Recreate the full URL from the short code by reading from GCS
 func lengthenURL(short string) (string, error) {
 	return gcsRead(short)
 }
 
+// Primitive to write an arbitrary string to a GCS object
 func gcsWrite(short string, url string) error {
 	ctx := context.Background()
 
@@ -148,6 +155,7 @@ func gcsWrite(short string, url string) error {
 	return nil
 }
 
+// Primitive to read an arbitrary string from a GCS object
 func gcsRead(short string) (string, error) {
 	ctx := context.Background()
 	client, err := storage.NewClient(ctx)
@@ -179,6 +187,7 @@ func gcsRead(short string) (string, error) {
 	return buffer.String(), nil
 }
 
+// Create a URL-friendly short code with a dense name
 func generateShortCode(url string) string {
 	crc32 := crc32.ChecksumIEEE([]byte(url))
 	num := make([]byte, 4)
@@ -187,6 +196,7 @@ func generateShortCode(url string) string {
 	return code
 }
 
+// Respond to all HTTP requests
 func respond(resp response, code int, writer http.ResponseWriter) {
 	marshalled, err := json.Marshal(resp)
 	if err != nil {
@@ -195,3 +205,4 @@ func respond(resp response, code int, writer http.ResponseWriter) {
 	writer.WriteHeader(code)
 	writer.Write(marshalled)
 }
+

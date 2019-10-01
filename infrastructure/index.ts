@@ -14,10 +14,12 @@ const stageName = process.env.UW_STAGE_NAME || pulumi.getStack();
 const appName = process.env.UW_APP_NAME || `urly-wurly-${stageName}`;
 const imageName = process.env.UW_IMAGE_NAME || `gcr.io/${projectName}/${appName}`;
 
+// Create GCS bucket to store links
 const bucket = new gcp.storage.Bucket(appName, {
   location: locationName.split('-')[0],
 });
 
+// Create a managed CloudRun service to run the server container
 const service = new gcp.cloudrun.Service(appName, {
   location: locationName,
   metadata: {
@@ -32,6 +34,7 @@ const service = new gcp.cloudrun.Service(appName, {
   },
 });
 
+// Create the DNS domain mapping to point to the newly created CloudRun service
 const mapping = new gcp.cloudrun.DomainMapping(appName, {
   location: locationName,
   name: domainName,
@@ -43,6 +46,7 @@ const mapping = new gcp.cloudrun.DomainMapping(appName, {
   },
 });
 
+// Create a CloudBuild CI/CD trigger
 const pipeline = new gcp.cloudbuild.Trigger(appName, {
   project: projectName,
   triggerTemplate: {
@@ -58,6 +62,7 @@ const pipeline = new gcp.cloudbuild.Trigger(appName, {
   filename: 'ci/cloudbuild.yaml'
 });
 
+// Authorize CloudBuild SA to deploy to CloudRun
 const pipelineBinding = new gcp.projects.IAMBinding(appName, {
   role: 'roles/editor',
   project: projectName,
@@ -65,3 +70,4 @@ const pipelineBinding = new gcp.projects.IAMBinding(appName, {
     `serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com`,
   ],
 });
+
