@@ -80,11 +80,18 @@ const pipelineBinding = new gcp.projects.IAMBinding(`${appName}-pipeline`, {
   ],
 });
 
+// const serviceBinding = new gcp.cloudrun.IAMBinding(`${appName}-servicve`, {
+//   role: 'roles/run.Invoker',
+//   service: service.name,
+//   members: [
+//     'group:allUsers',
+//   ],
+// });
+
 const storageBinding = new gcp.storage.BucketIAMBinding(`${appName}-storage`, {
+  role: 'roles/storage.objectAdmin',
   bucket: bucket.name,
   members: [
-    gcp.compute.getDefaultServiceAccount().email, // Double check
+    `serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com`,
   ],
-  role: 'roles/storage.objectAdmin',
 });
-
