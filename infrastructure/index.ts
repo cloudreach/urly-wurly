@@ -34,17 +34,26 @@ const service = new gcp.cloudrun.Service(appName, {
   },
 });
 
-// Create the DNS domain mapping to point to the newly created CloudRun service
-const mapping = new gcp.cloudrun.DomainMapping(appName, {
-  location: locationName,
-  name: domainName,
-  metadata: {
-    namespace: projectName,
-  },
-  spec: {
-    routeName: service.name,
-  },
-});
+if (stageName === 'prod') {
+  // Create public DNS zone for Urly-Wurly
+  const zone = new gcp.dns.ManagedZone(appName, {
+    dnsName: `${domainName}.`,
+    description: `Public DNS hosted zone for ${appName}`,
+    visibility: 'public',
+  });
+
+  // Create the DNS domain mapping to point to the newly created CloudRun service
+  const mapping = new gcp.cloudrun.DomainMapping(appName, {
+    location: locationName,
+    name: domainName,
+    metadata: {
+      namespace: projectName,
+    },
+    spec: {
+      routeName: service.name,
+    },
+  });
+}
 
 // Create a CloudBuild CI/CD trigger
 const pipeline = new gcp.cloudbuild.Trigger(appName, {
@@ -56,18 +65,26 @@ const pipeline = new gcp.cloudbuild.Trigger(appName, {
   description: `Urly-Wurly build pipeline for stage '${stageName}'`,
   substitutions: {
     '_DOMAIN': domainName,
-    '_APP': appName,
+    '_APP': service.name,
     '_BUCKET': bucket.name,
   },
   filename: 'ci/cloudbuild.yaml'
 });
 
 // Authorize CloudBuild SA to deploy to CloudRun
-const pipelineBinding = new gcp.projects.IAMBinding(appName, {
+const pipelineBinding = new gcp.projects.IAMBinding(`${appName}-pipeline`, {
   role: 'roles/editor',
   project: projectName,
   members: [
     `serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com`,
   ],
+});
+
+const storageBinding = new gcp.storage.BucketIAMBinding(`${appName}-storage`, {
+  bucket: bucket.name,
+  members: [
+    gcp.compute.getDefaultServiceAccount().email, // Double check
+  ],
+  role: 'roles/storage.objectAdmin',
 });
 
