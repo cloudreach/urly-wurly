@@ -42,6 +42,19 @@ if (stageName === 'prod') {
     visibility: 'public',
   });
 
+  // Create verification record for WebMaster Central
+  const verificationName = process.env.UW_VERIFICATION_NAME || config.require('verification-record-name');
+  const verificationData = process.env.UW_VERIFICATION_DATA || config.require('verification-record-data');
+  const record = new gcp.dns.RecordSet(`${appName}-verification`, {
+    managedZone: zone.name,
+    name: verificationName,
+    type: 'CNAME',
+    ttl: 300,
+    rrdatas: [
+      verificationData,
+    ],
+  });
+
   // Create the DNS domain mapping to point to the newly created CloudRun service
   const mapping = new gcp.cloudrun.DomainMapping(appName, {
     location: locationName,
