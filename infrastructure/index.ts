@@ -94,6 +94,7 @@ const pipelineBinding = new gcp.projects.IAMBinding(`${appName}-pipeline`, {
   ],
 });
 
+// NOTE: This is not yet supported
 // const serviceBinding = new gcp.cloudrun.IAMBinding(`${appName}-servicve`, {
 //   role: 'roles/run.Invoker',
 //   service: service.name,
@@ -102,6 +103,7 @@ const pipelineBinding = new gcp.projects.IAMBinding(`${appName}-pipeline`, {
 //   ],
 // });
 
+// Authorize GCE SA (used by CloudRun) to get/put objects of the storage bucket
 const storageBinding = new gcp.storage.BucketIAMBinding(`${appName}-storage`, {
   role: 'roles/storage.objectAdmin',
   bucket: bucket.name,
