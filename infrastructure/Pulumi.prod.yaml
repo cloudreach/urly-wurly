@@ -8,3 +8,4 @@ config:
   urly-wurly:project_number: 685700238968
   urly-wurly:verification-record-name: ogj5l6vccyaz.cldr.ch.
   urly-wurly:verification-record-data: gv-6btmufp2eovlig.dv.googlehosted.com.
+  urly-wurly:verification-record-type: CNAME

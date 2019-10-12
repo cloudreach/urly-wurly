@@ -45,10 +45,11 @@ if (stageName === 'prod') {
   // Create verification record for WebMaster Central
   const verificationName = process.env.UW_VERIFICATION_NAME || config.require('verification-record-name');
   const verificationData = process.env.UW_VERIFICATION_DATA || config.require('verification-record-data');
+  const verificationType = process.env.UW_VERIFICATION_TYPE || config.require('verification-record-type');
   const record = new gcp.dns.RecordSet(`${appName}-verification`, {
     managedZone: zone.name,
     name: verificationName,
-    type: 'CNAME',
+    type: verificationType,
     ttl: 300,
     rrdatas: [
       verificationData,
