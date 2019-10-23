@@ -57,16 +57,17 @@ if (stageName === 'prod') {
   });
 
   // Create the DNS domain mapping to point to the newly created CloudRun service
-  const mapping = new gcp.cloudrun.DomainMapping(appName, {
-    location: locationName,
-    name: domainName,
-    metadata: {
-      namespace: projectName,
-    },
-    spec: {
-      routeName: service.name,
-    },
-  });
+  // This is not yet supported
+  // const mapping = new gcp.cloudrun.DomainMapping(appName, {
+  //   location: locationName,
+  //   name: domainName,
+  //   metadata: {
+  //     namespace: projectName,
+  //   },
+  //   spec: {
+  //     routeName: service.name,
+  //   },
+  // });
 }
 
 // Create a CloudBuild CI/CD trigger
@@ -94,7 +95,7 @@ const pipelineBinding = new gcp.projects.IAMBinding(`${appName}-pipeline`, {
   ],
 });
 
-// NOTE: This is not yet supported
+// This is not yet supported
 // const serviceBinding = new gcp.cloudrun.IAMBinding(`${appName}-servicve`, {
 //   role: 'roles/run.Invoker',
 //   service: service.name,
