@@ -1,8 +1,0 @@
-config:
-  gcp:project: cr-prod-urlywurly-1570435182
-  urly-wurly:location: us-central1
-  urly-wurly:branch: develop
-  urly-wurly:repository: bitbucket_cloudreach_urly-wurly
-  urly-wurly:domain: urly-wurly-dev-dc40f63-mcyuzqs6na-uc.a.run.app
-  urly-wurly:project_name: cr-prod-urlywurly-1570435182
-  urly-wurly:project_number: 685700238968
