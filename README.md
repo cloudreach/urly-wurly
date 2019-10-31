@@ -8,3 +8,4 @@ Sure! You'll need an authenticated GCP login, Cloud Run service enabled and beta
 ```bash
 make STAGE=dev infrastructure
 ```
+
