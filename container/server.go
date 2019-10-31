@@ -69,7 +69,7 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 	parameters, ok = r.URL.Query()["customname"]
 	if ok {
 		custom = parameters[0]
-		reg, err := regexp.Compile(`[\w-]{6,}`)
+		reg, err := regexp.Compile(`^[\w-]{6,}$`)
 		if err != nil {
 			respond(response{"", "unable to compile regex"}, http.StatusInternalServerError, w)
 		}
