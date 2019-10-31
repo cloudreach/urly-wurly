@@ -1,0 +1,10 @@
+{
+    "name": "gcp-typescript",
+    "devDependencies": {
+        "@types/node": "^8.0.0"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^1.0.0",
+        "@pulumi/gcp": "^1.0.0"
+    }
+}

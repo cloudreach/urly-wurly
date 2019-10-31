@@ -1,0 +1,11 @@
+config:
+  gcp:project:
+  urly-wurly:location: us-central1
+  urly-wurly:branch: master
+  urly-wurly:repository:
+  urly-wurly:domain:
+  urly-wurly:project_name:
+  urly-wurly:project_number:
+  urly-wurly:verification-record-name:
+  urly-wurly:verification-record-data:
+  urly-wurly:verification-record-type: TXT

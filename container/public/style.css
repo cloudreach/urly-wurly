@@ -1,0 +1,92 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+    font-family: 'Montserrat', sans-serif;
+    background: #fab41e url('/bg.png') no-repeat center center / 100% 100%;
+    background-attachment: fixed;
+}
+.jumbotron {
+    background-color: #fff;
+}
+
+a {
+    color: #000;
+}
+
+        .slider-handle {
+    background-color: #000;
+    background-image: -webkit-linear-gradient(top,#000 0,#000 100%);
+    background-image: -o-linear-gradient(top,#000 0,#000 100%);
+    background-image: linear-gradient(to bottom,#000 0,#000 100%);
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+
+.btn-primary:hover {
+    background-color: #503273;
+    border-color: #503273;
+}
+
+.btn-default {
+    color: #000;
+    background-color: #fab41e;
+    border-color: #fab41e;
+}
+.btn-default:hover {
+    color: #503273;
+    background-color: #fab41e;
+    border-color: #fab41e;
+    }
+
+
+.input-group-btn:last-child > .form-control {
+    margin-left: -1px;
+    width: auto;
+}
+
+.input-group {
+    margin-bottom: 13px;
+}
+
+.navbar-img {
+    height: 75px;
+    width: 75px;
+    display: block;
+    float: left;
+    margin: 0 0 -20px 0;
+    padding: 0;
+
+    }
+
+
+.navbar-default {
+    background-color: #000;
+    color: #fff;
+}
+.navbar a {
+    color: #fff;
+    }
+.spacer {
+    height: 100px;
+}
+
+.alert-danger {
+    color: #c30f5a;
+}
+.text-info {
+   color: #000;
+}
+
+.code {
+    color: #c30f5a;
+ }
+
+code#generatedUrl {
+    text-align: left;
+    display: block;
+    white-space: pre;
+}

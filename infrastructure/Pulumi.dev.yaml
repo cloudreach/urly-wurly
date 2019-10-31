@@ -1,0 +1,8 @@
+config:
+  gcp:project:
+  urly-wurly:location: us-central1
+  urly-wurly:branch: develop
+  urly-wurly:repository: 
+  urly-wurly:domain:
+  urly-wurly:project_name:
+  urly-wurly:project_number:
