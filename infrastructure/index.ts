@@ -8,6 +8,7 @@ const projectNumber = process.env.UW_PROJECT_NUMBER || config.require('project_n
 const locationName = process.env.UW_LOCATION || config.require('location');
 const domainName = process.env.UW_DOMAIN_NAME || config.require('domain');
 const repositoryName = process.env.UW_REPOSITORY_NAME || config.require('repository');
+const repositoryOwner = process.env.UW_REPOSITORY_NAME || config.require('owner');
 const branchName = process.env.UW_BRANCH_NAME || config.require('branch');
 
 const stageName = process.env.UW_STAGE_NAME || pulumi.getStack();
@@ -73,9 +74,12 @@ if (stageName === 'prod') {
 // Create a CloudBuild CI/CD trigger
 const pipeline = new gcp.cloudbuild.Trigger(appName, {
   project: projectName,
-  triggerTemplate: {
-    branchName: branchName,
-    repoName: repositoryName,
+  github: {
+    name: repositoryName,
+    owner: repositoryOwner,
+    push: {
+      branch: branchName,
+    }
   },
   description: `Urly-Wurly build pipeline for stage '${stageName}'`,
   substitutions: {
@@ -96,7 +100,7 @@ const pipelineBinding = new gcp.projects.IAMBinding(`${appName}-pipeline`, {
 });
 
 // This is not yet supported
-// const serviceBinding = new gcp.cloudrun.IAMBinding(`${appName}-servicve`, {
+// const serviceBinding = new gcp.cloudrun.IAMBinding(`${appName}-service`, {
 //   role: 'roles/run.Invoker',
 //   service: service.name,
 //   members: [
