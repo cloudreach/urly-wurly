@@ -6,3 +6,4 @@
 
 * send authenticated user context to backend and associate with GCS object metadata
 
+* blog about it

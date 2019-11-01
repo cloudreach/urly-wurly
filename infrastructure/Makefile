@@ -1,8 +1,10 @@
+init:
+	npm i
+
 infrastructure:
 	pulumi stack select ${STAGE}
 	pulumi up -y
 
-all: infrastructure 
+all: init infrastructure 
 
-.PHONY: all infrastructure
-
+.PHONY: all init infrastructure
