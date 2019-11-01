@@ -1,18 +1,18 @@
 # Urly Wurly is an URL shortener build on GCP Cloud Run
 
-![Urly-Wurly Logo](/logo.png)
+![Urly-Wurly Logo](logo.png)
 
 ## What Is It
 
 Urly Wurly is a serverless URL shortening service, which has been created during an internal serverless competition over at [@cloudreach](https://github.com/cloudreach). This repository contains the infrastructure-as-code for deploying the necessary infrastructure on GCP as well as the actual code for a single Golang container at the heart of the service. The following diagram gives an overview of the various serverless GCP technologies at work:
 
-![Urly-Wurly](/arch.png)
+![Urly-Wurly](arch.png)
 
 ## I Wanna Try It
 
 Sure! You'll need an Google Cloud Platform project with an authenticated login (`project/editor` is preferred). In order to deploy the infrastructure you'll also need the current [Pulumi](https://www.pulumi.com/) executables installed.
 
-Unfortunatly, you'll still need to do a couple of manual interactions with GCP as the required resources are not yet fully supported by either Pulumi or the underlying Terraform provider, but don't worry, I'll walk you through them.
+Unfortunatly, you'll still need to do a couple oxf manual interactions with GCP as the required resources are not yet fully supported by either Pulumi or the underlying Terraform provider, but don't worry, I'll walk you through them.
 
 ### Enabling Services
 
