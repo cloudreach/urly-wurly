@@ -1,6 +1,6 @@
 # Urly Wurly is an URL shortener build on GCP Cloud Run
 
-[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run?dir=infrastructure)
+[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run?dir=container)
 
 ## What Is It
 
