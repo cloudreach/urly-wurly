@@ -34,6 +34,10 @@ Per default, this repository comes with two stages: `dev` and `prod`. They are m
 
 After you have deployed you CloudRun services, you'll need to manually create and IAM Binding for it to make the endpoint public. Creating this IAM Binding isn't currently supported in Terraform. Per default, GCP CloudRun will look for a GCP `Authentication Bearer` token when invoked. To make the endpoint public, add a binding for the role `roles/run.Invoker` to `groups:allUsers` for each service.
 
+### Set OAuth 2.0
+
+You'all need credentials for sigining via Google. Create client id from APIs & services in GCP and update the section with generated value in public/index.html `<meta name="google-signin-client_id" content="<client-id>">` . For more details on configuration check [Setting up OAuth 2.0](https://support.google.com/cloud/answer/6158849?hl=en)
+
 ### How to Execute the Deployment
 
 That's simple. Run:
