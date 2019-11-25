@@ -36,7 +36,7 @@ After you have deployed you CloudRun services, you'll need to manually create an
 
 ### Set OAuth 2.0
 
-You'all need credentials for sigining via Google. Create client id from APIs & services in GCP and update the section with generated value in public/index.html `<meta name="google-signin-client_id" content="<client-id>">` . For more details on configuration check [Setting up OAuth 2.0](https://support.google.com/cloud/answer/6158849?hl=en)
+You will need credentials for sigining via Google. Create client id from APIs & services in GCP and update the section with generated value in public/index.html `<meta name="google-signin-client_id" content="<client-id>">` . For more details on configuration check [Setting up OAuth 2.0](https://support.google.com/cloud/answer/6158849?hl=en)
 
 ### How to Execute the Deployment
 
