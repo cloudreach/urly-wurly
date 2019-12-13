@@ -86,6 +86,7 @@ const pipeline = new gcp.cloudbuild.Trigger(appName, {
     '_DOMAIN': domainName,
     '_APP': service.name,
     '_BUCKET': bucket.name,
+    '_LOCATION': locationName,
   },
   filename: 'ci/cloudbuild.yaml'
 });
