@@ -54,7 +54,12 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	longURL := strings.TrimSpace(parameters[0])
+    encodedLongURL := strings.TrimSpace(parameters[0])
+    longURL, err := url.QueryUnescape(encodedLongURL)
+	if err != nil {
+		respond(response{"", "unable to decode URL. was it encoded?"}, http.StatusBadRequest, w)
+		return
+	}
 	uri, err := url.Parse(longURL)
 	if err != nil {
 		respond(response{"", "unable to parse URI. was it encoded?"}, http.StatusBadRequest, w)
