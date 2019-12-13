@@ -10,7 +10,7 @@ steps:
     - 'deploy'
     - '--allow-unauthenticated'
     - '--platform=managed'
-    - '--region=us-central1'
+    - '--region=$_LOCATION'
     - '--image=gcr.io/$PROJECT_ID/$_APP'
     - '--set-env-vars=DOMAIN=$_DOMAIN,BUCKET=$_BUCKET'
     - '$_APP'
