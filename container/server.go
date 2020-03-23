@@ -36,7 +36,7 @@ type response struct {
 // Launch HTTP server, register routes & handlers and server static files
 func main() {
 	err := profiler.Start(profiler.Config{
-		Service:              "",
+		Service:              "urly-wurly",
 		NoHeapProfiling:      true,
 		NoAllocProfiling:     true,
 		NoGoroutineProfiling: true,
