@@ -15,9 +15,14 @@ import (
 	"regexp"
 	"strings"
 
+	"cloud.google.com/go/profiler"
 	"cloud.google.com/go/storage"
+
 	"github.com/gorilla/mux"
 	"github.com/mr-tron/base58"
+
+	"contrib.go.opencensus.io/exporter/stackdriver"
+	"go.opencensus.io/trace"
 )
 
 // struct response forms a JSON response for the servers API.
@@ -30,6 +35,26 @@ type response struct {
 
 // Launch HTTP server, register routes & handlers and server static files
 func main() {
+	err := profiler.Start(profiler.Config{
+		Service:              "",
+		NoHeapProfiling:      true,
+		NoAllocProfiling:     true,
+		NoGoroutineProfiling: true,
+		DebugLogging:         true,
+		ServiceVersion:       "1.0.0",
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	exporter, err := stackdriver.NewExporter(stackdriver.Options{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	trace.RegisterExporter(exporter)
+	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
+	_, span := trace.StartSpan(context.Background(), "main")
+	defer span.End()
+
 	router := mux.NewRouter()
 	router.HandleFunc("/s", shortenHandler).Methods(http.MethodGet, http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/{id:[\\w-]+}", lengthenHandler).Methods(http.MethodGet, http.MethodOptions)
@@ -41,6 +66,8 @@ func main() {
 
 // GET & POST handler to shorten URLs
 func shortenHandler(w http.ResponseWriter, r *http.Request) {
+	_, span := trace.StartSpan(context.Background(), "shortenHandler")
+	defer span.End()
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 	if r.Method == http.MethodOptions {
@@ -54,8 +81,8 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-    encodedLongURL := strings.TrimSpace(parameters[0])
-    longURL, err := url.QueryUnescape(encodedLongURL)
+	encodedLongURL := strings.TrimSpace(parameters[0])
+	longURL, err := url.QueryUnescape(encodedLongURL)
 	if err != nil {
 		respond(response{"", "unable to decode URL. was it encoded?"}, http.StatusBadRequest, w)
 		return
@@ -102,6 +129,8 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 // GET handler to lengthen a previously shortened URLS.
 // Upon success, HTTP 302 will be returned to redirect to long URL
 func lengthenHandler(w http.ResponseWriter, r *http.Request) {
+	_, span := trace.StartSpan(context.Background(), "lengthenHandler")
+	defer span.End()
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	if r.Method == http.MethodOptions {
 		return
@@ -118,6 +147,8 @@ func lengthenHandler(w http.ResponseWriter, r *http.Request) {
 
 // Create a short URL and store the long one in GCS
 func shortenURL(long string, code string) (string, error) {
+	_, span := trace.StartSpan(context.Background(), "shortenURL")
+	defer span.End()
 	if code == "" {
 		code = generateShortCode(long)
 	}
@@ -132,11 +163,15 @@ func shortenURL(long string, code string) (string, error) {
 
 // Recreate the full URL from the short code by reading from GCS
 func lengthenURL(short string) (string, error) {
+	_, span := trace.StartSpan(context.Background(), "lengthenURL")
+	defer span.End()
 	return gcsRead(short)
 }
 
 // Primitive to write an arbitrary string to a GCS object
 func gcsWrite(short string, url string) error {
+	_, span := trace.StartSpan(context.Background(), "gcsWrite")
+	defer span.End()
 	ctx := context.Background()
 
 	client, err := storage.NewClient(ctx)
@@ -168,6 +203,8 @@ func gcsWrite(short string, url string) error {
 
 // Primitive to read an arbitrary string from a GCS object
 func gcsRead(short string) (string, error) {
+	_, span := trace.StartSpan(context.Background(), "gcsRead")
+	defer span.End()
 	ctx := context.Background()
 	client, err := storage.NewClient(ctx)
 	if err != nil {
@@ -200,6 +237,8 @@ func gcsRead(short string) (string, error) {
 
 // Create a URL-friendly short code with a dense name
 func generateShortCode(url string) string {
+	_, span := trace.StartSpan(context.Background(), "generateShortCode")
+	defer span.End()
 	crc32 := crc32.ChecksumIEEE([]byte(url))
 	num := make([]byte, 4)
 	binary.LittleEndian.PutUint32(num, crc32)
@@ -209,6 +248,8 @@ func generateShortCode(url string) string {
 
 // Respond to all HTTP requests
 func respond(resp response, code int, writer http.ResponseWriter) {
+	_, span := trace.StartSpan(context.Background(), "respond")
+	defer span.End()
 	marshalled, err := json.Marshal(resp)
 	if err != nil {
 		log.Println(err)
