@@ -54,7 +54,9 @@ func main() {
 	exporter.StartMetricsExporter()
 	defer exporter.StopMetricsExporter()
 	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
-	_, span := trace.StartSpan(context.Background(), "main")
+
+	ctx := context.Background()
+	ctx, span := trace.StartSpan(ctx, "main")
 	defer span.End()
 
 	router := mux.NewRouter()
@@ -69,7 +71,7 @@ func main() {
 // GET & POST handler to shorten URLs
 func shortenHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
-	_, span := trace.StartSpan(ctx, "shortenHandler")
+	ctx, span := trace.StartSpan(ctx, "shortenHandler")
 	defer span.End()
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
@@ -133,7 +135,7 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 // Upon success, HTTP 302 will be returned to redirect to long URL
 func lengthenHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
-	_, span := trace.StartSpan(ctx, "lengthenHandler")
+	ctx, span := trace.StartSpan(ctx, "lengthenHandler")
 	defer span.End()
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	if r.Method == http.MethodOptions {
@@ -151,7 +153,7 @@ func lengthenHandler(w http.ResponseWriter, r *http.Request) {
 
 // Create a short URL and store the long one in GCS
 func shortenURL(ctx context.Context, long string, code string) (string, error) {
-	_, span := trace.StartSpan(ctx, "shortenURL")
+	ctx, span := trace.StartSpan(ctx, "shortenURL")
 	defer span.End()
 	if code == "" {
 		code = generateShortCode(ctx, long)
@@ -167,14 +169,14 @@ func shortenURL(ctx context.Context, long string, code string) (string, error) {
 
 // Recreate the full URL from the short code by reading from GCS
 func lengthenURL(ctx context.Context, short string) (string, error) {
-	_, span := trace.StartSpan(ctx, "lengthenURL")
+	ctx, span := trace.StartSpan(ctx, "lengthenURL")
 	defer span.End()
 	return gcsRead(ctx, short)
 }
 
 // Primitive to write an arbitrary string to a GCS object
 func gcsWrite(ctx context.Context, short string, url string) error {
-	_, span := trace.StartSpan(ctx, "gcsWrite")
+	ctx, span := trace.StartSpan(ctx, "gcsWrite")
 	defer span.End()
 
 	client, err := storage.NewClient(ctx)
@@ -206,7 +208,7 @@ func gcsWrite(ctx context.Context, short string, url string) error {
 
 // Primitive to read an arbitrary string from a GCS object
 func gcsRead(ctx context.Context, short string) (string, error) {
-	_, span := trace.StartSpan(ctx, "gcsRead")
+	ctx, span := trace.StartSpan(ctx, "gcsRead")
 	defer span.End()
 	client, err := storage.NewClient(ctx)
 	if err != nil {
@@ -239,7 +241,7 @@ func gcsRead(ctx context.Context, short string) (string, error) {
 
 // Create a URL-friendly short code with a dense name
 func generateShortCode(ctx context.Context, url string) string {
-	_, span := trace.StartSpan(ctx, "generateShortCode")
+	ctx, span := trace.StartSpan(ctx, "generateShortCode")
 	defer span.End()
 	crc32 := crc32.ChecksumIEEE([]byte(url))
 	num := make([]byte, 4)
@@ -250,7 +252,7 @@ func generateShortCode(ctx context.Context, url string) string {
 
 // Respond to all HTTP requests
 func respond(ctx context.Context, resp response, code int, writer http.ResponseWriter) {
-	_, span := trace.StartSpan(ctx, "respond")
+	ctx, span := trace.StartSpan(ctx, "respond")
 	defer span.End()
 	marshalled, err := json.Marshal(resp)
 	if err != nil {
